@@ -29,7 +29,7 @@ resource "aws_lambda_function" "mypython_lambda" {
     function_name = "mypython_lambda_test"
     role = aws_iam_role.mypython_lambda_role.arn
     handler = "lambda_handler"
-    runtime = "python2.7"
+    runtime = "python3.9"
 }
 
 resource "aws_iam_role" "mypython_lambda_role" {
