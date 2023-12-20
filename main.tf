@@ -10,12 +10,15 @@ terraform {
 }
 
 variable "aws_region" {
-    type = string
-    default = "us-east-1"
+    type = map
+    default = {
+        dev = "us-east-1"
+        prod = "eu-west-2"
+    }
 }
 
 provider "aws" {
-    region = var.aws_region
+    region = var.aws_region[terraform.workspace]
 }
 
 data "archive_file" "myzip" {
@@ -26,7 +29,7 @@ data "archive_file" "myzip" {
 
 resource "aws_lambda_function" "mypython_lambda" {
     filename = "main.zip"
-    function_name = "mypython_lambda_test"
+    function_name = "mypython_lambda_test_${terraform.workspace}"
     role = aws_iam_role.mypython_lambda_role.arn
     handler = "main.lambda_handler"
     runtime = "python3.9"
