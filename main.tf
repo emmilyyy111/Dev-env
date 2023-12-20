@@ -57,13 +57,13 @@ EOF
 }
 
 resource "aws_sqs_queue" "main_queue" {
-    name = "my-main-queue"
+    name = "my-main-queue-${terraform.workspace}"
     delay_seconds = 30
     max_message_size = 262144
 }
 
 resource "aws_sqs_queue" "dlq_queue" {
-    name = "my-dlq-queue"
+    name = "my-dlq-queue-${terraform.workspace}"
     delay_seconds = 30
     max_message_size = 262144
 }
