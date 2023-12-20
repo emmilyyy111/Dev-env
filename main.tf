@@ -53,3 +53,19 @@ resource "aws_iam_role" "mypython_lambda_role" {
 EOF
 }
 
+resource "aws_sqs_queue" "main_queue" {
+    name = "my-main-queue"
+    delay_seconds = 30
+    max_message_size = 262144
+}
+
+resource "aws_sqs_queue" "dlq_queue" {
+    name = "my-dlq-queue"
+    delay_seconds = 30
+    max_message_size = 262144
+}
+
+resource "aws_lambda_event_source_mapping" "sqs-lambda-trigger" {
+    event_source_arn = aws_sqs_queue.main_queue.arn
+    function_name = aws_lambda_function.mypython_lambda.arn
+}
